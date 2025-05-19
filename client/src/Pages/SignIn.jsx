@@ -92,7 +92,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice';
-
+import { OAuth } from '../assets/Components/OAuth';
 export default function SignIn() {
   const [formData, setFormData] = useState({});
   const { loading, error } = useSelector((state) => state.user);
@@ -170,7 +170,7 @@ export default function SignIn() {
             ) : 'Sign In'}
           </button>
         </form>
-        
+        <OAuth />
         <div className='text-center mt-6'>
           <div className='flex items-center justify-center space-x-2 text-slate-600'>
             <p>Don't have an account?</p>

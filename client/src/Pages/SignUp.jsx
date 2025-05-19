@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaUser, FaEnvelope, FaLock, FaTimesCircle } from "react-icons/fa";
-import { Cursor } from "mongoose";
+import { OAuth } from "../assets/Components/OAuth";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({});
@@ -131,7 +131,7 @@ export default function SignUp() {
             )}
           </button>
         </form>
-
+        <OAuth />   
         <div className="flex items-center justify-center mt-6">
           <div className="text-sm">
             <p className="text-gray-600 inline">Already have an account? </p>
