@@ -8,7 +8,10 @@ import { next } from './middleware/error.middleware.js';
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173', // or whatever your frontend URL is
+    credentials: true
+  }));
 app.use(cookieParser());
 app.use(express.json({
     limit: "16kb"

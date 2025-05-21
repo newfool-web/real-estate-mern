@@ -1,5 +1,7 @@
 import { uploadOnCloudinary } from '../utils/clodinary.js';
 import bcrypt from 'bcrypt';
+import User from '../model/user.model.js';
+import { errorHandler } from '../utils/errorHandler.js';
 
 export const uploadProfilePicture = async (req, res) => {
     try {
@@ -35,7 +37,7 @@ export const updateUser = async (req, res, next) => {
       return next(errorHandler(401, 'You can only update your own account!'));
     try {
       if (req.body.password) {
-        req.body.password = bcrypt.hash(req.body.password, 10);
+        req.body.password = await bcrypt.hash(req.body.password, 10);
       }
   
       const updatedUser = await User.findByIdAndUpdate(
@@ -49,7 +51,11 @@ export const updateUser = async (req, res, next) => {
           },
         },
         { new: true }
-        );
+      );
+
+      if (!updatedUser) {
+        return next(errorHandler(404, 'User not found'));
+      }
 
       const {password, ...userData} = updatedUser._doc;
       res.status(200).json(userData);
