@@ -33,6 +33,11 @@ export const uploadProfilePicture = async (req, res) => {
 };
 
 export const updateUser = async (req, res, next) => {
+  //Ye req.user.id is the id of the user who is logged in
+  //req.params.id is the id of the user who is being updated
+  //If the id of the user who is logged in is not equal to the id of the user who is being updated, then return an error
+  //This is to prevent any user from updating another user's account
+  //Aur ye user.id verifyUser.js se aa rhi hai
     if (req.user.id !== req.params.id)
       return next(errorHandler(401, 'You can only update your own account!'));
     try {
@@ -62,4 +67,16 @@ export const updateUser = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
+};
+
+export const deleteUser = async (req, res, next) => {
+  if (req.user.id !== req.params.id)
+    return next(errorHandler(401, 'You can only delete your own account!'));
+  try {
+    await User.findByIdAndDelete(req.params.id);
+    res.clearCookie('accessToken');
+    res.status(200).json('User has been deleted!');
+  } catch (error) {
+    next(error);
+  }
 };
