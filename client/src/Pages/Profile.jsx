@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux';
 import { useRef, useState, useEffect } from 'react';
 import { updateUserStart, updateUserSuccess, updateUserFailure, deleteUserStart, deleteUserSuccess, deleteUserFailure, signOutUserStart, signOutUserSuccess, signOutUserFailure } from '../redux/user/userSlice';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 
 export default function Profile() {
@@ -29,9 +30,11 @@ export default function Profile() {
         return;
       }
 
+      setFilePerc(0);
+      setFileUploadError('');
+
       // Create form data
       const formData = new FormData();
-      
       formData.append('file', file);
 
       // Upload to backend using fetch
@@ -42,19 +45,19 @@ export default function Profile() {
       });
 
       const data = await response.json();
-      console.log('Upload response:', data); // Debug log
       
       if (!response.ok) {
-        throw new Error(data.message || 'Upload failed');
+        throw new Error(data.error || data.message || 'Upload failed');
       }
       
       if (data.url) {
-        console.log('Setting avatar URL:', data.url); // Debug log
         setFormData((prev) => ({ ...prev, avatar: data.url }));
+        setFilePerc(100);
         setFileUploadError('');
       }
     } catch (error) {
       setFileUploadError(error.message || 'Error uploading file');
+      setFilePerc(0);
       console.error('Error uploading file:', error);
     }
   };
@@ -176,6 +179,12 @@ export default function Profile() {
         className='bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80 '>
           {loading ? 'Loading...' : 'Update'}
         </button>
+        <Link
+          className='bg-green-700 text-white p-3 rounded-lg uppercase text-center hover:opacity-95'
+          to={'/create-listing'}
+        >
+          Create Listing
+        </Link>
       </form>
       {error && <p className='text-red-500 mt-5'>{error}</p>}
       {updateSuccess && (
