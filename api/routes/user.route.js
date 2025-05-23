@@ -1,5 +1,5 @@
 import express from 'express';
-import { updateUser, uploadProfilePicture, deleteUser } from '../controllers/user.controller.js';
+import { updateUser, uploadProfilePicture, deleteUser, getUserListings } from '../controllers/user.controller.js';
 import { handleMulterUpload } from '../middleware/multer.middleware.js';
 import { verifyToken } from '../utils/verifyUser.js';
 const router = express.Router();
@@ -8,6 +8,6 @@ const router = express.Router();
 router.post('/upload', handleMulterUpload, uploadProfilePicture);
 router.post('/update/:id', verifyToken, updateUser)
 router.delete('/delete/:id', verifyToken, deleteUser)
-
+router.get('/listings/:id', verifyToken, getUserListings)
 
 export default router;
