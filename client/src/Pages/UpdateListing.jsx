@@ -272,7 +272,12 @@ export default function UpdateListing() {
               />
               <div className='flex flex-col items-center'>
                 <p>Regular price</p>
-                <span className='text-xs'>($ / month)</span>
+                  {formData.type === 'rent' && (
+                    <span className='text-xs'>($ / month)</span>
+                  )}
+                  {formData.type === 'sale' && (
+                    <span className='text-xs'>($)</span>
+                  )}
               </div>
             </div>
             {formData.offer && (
@@ -289,11 +294,16 @@ export default function UpdateListing() {
               />
               <div className='flex flex-col items-center'>
                 <p>Discounted price</p>
-                <span className='text-xs'>($ / month)</span>
+                {formData.type === 'rent' && (
+                  <span className='text-xs'>($ / month)</span>
+                )}
+                {formData.type === 'sale' && (
+                  <span className='text-xs'>($)</span>
+                )}
               </div>
             </div>
             )}
-            
+             
           </div>
         </div>
         <div className='flex flex-col flex-1 gap-4'>
