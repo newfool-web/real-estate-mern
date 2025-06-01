@@ -4,7 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react"
 import SwiperCore from "swiper"
 import { Navigation } from "swiper/modules"
 import "swiper/css/bundle"
-import ListingItem from "../assets/components/ListingItem"
+import ListingItem from "../assets/Components/ListingItem"
 import { ArrowRight, Tag, Wallet, Building, Home } from "lucide-react"
 
 export default function HomePage() {
