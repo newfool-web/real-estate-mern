@@ -48,6 +48,4 @@ app.use((err, req, res, next) => {
     });
 });
 
-app.use(next);
-
 export { app };
