@@ -25,14 +25,14 @@
     "swiper": "^11.2.8",
     "tailwindcss": "^4.1.2",
     "@vitejs/plugin-react": "latest",
-    "@tailwindcss/postcss": "^4.1.7"
+    "@tailwindcss/postcss": "^4.1.7",
+    "autoprefixer": "^10.4.21"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
     "@tailwindcss/line-clamp": "^0.4.4",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
-    "autoprefixer": "^10.4.21",
     "eslint": "^9.21.0",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
