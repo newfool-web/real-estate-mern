@@ -6,8 +6,10 @@ import authRouter from './routes/auth.route.js'
 import listingRouter from './routes/listing.route.js'
 import { next } from './middleware/error.middleware.js';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
-const __dirname = path.resolve();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -30,15 +32,18 @@ app.use('/api/listing', listingRouter);
 
 
 if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, 'client/dist')));
+    const distPath = path.join(__dirname, '..', 'client', 'dist');
+    app.use(express.static(distPath));
     
-    app.get('/*', (req, res) => {
-        res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+    // Handle all other routes by serving index.html
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(distPath, 'index.html'));
     });
 }
  
 
 app.use((err, req, res, next) => {
+    console.error('Error:', err);
     const statusCode = err.statusCode || 500;
     const message = err.message || 'Internal Server Error';
     return res.status(statusCode).json({
