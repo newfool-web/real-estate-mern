@@ -216,7 +216,7 @@ export default function Listing() {
                 <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 p-8 sticky top-6">
                   {!currentUser?.currentUser && (
                     <div className="text-center text-gray-600">
-                      <p className="mb-4">Log in to send message to landlord</p>
+                      <p className="mb-4">Sign in to send message to landlord</p>
                       <Link
                         to="/sign-in"
                         className="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl font-semibold hover:from-blue-600 hover:to-purple-600 transition-all duration-200 inline-block"

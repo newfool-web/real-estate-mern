@@ -71,7 +71,7 @@ export default function Contact({ listing }) {
 
             <p className="text-gray-700">
               Contact <span className="font-semibold">{landlord.username}</span> for{" "}
-              <span className="font-semibold">{listing.name.toLowerCase()}</span>:
+              <span className="font-semibold capitalize">{listing.name}</span>:
             </p>
 
             <div>
