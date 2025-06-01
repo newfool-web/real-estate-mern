@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SearchIcon, Filter, SortAsc } from "lucide-react";
-import ListingItem from "../assets/components/ListingItem";
+import ListingItem from "../assets/Components/ListingItem";
 
 export default function Search() {
   const navigate = useNavigate();
