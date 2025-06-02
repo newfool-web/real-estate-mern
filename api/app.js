@@ -35,7 +35,7 @@ if (process.env.NODE_ENV === 'production') {
     const distPath = path.join(__dirname, '..', 'client', 'dist');
     app.use(express.static(distPath));
     
-    // Handle all other routes by serving index.html
+    
     app.get('*', (req, res) => {
         res.sendFile(path.join(distPath, 'index.html'));
     });
@@ -50,6 +50,13 @@ app.use((err, req, res, next) => {
         success: false,
         statusCode,
         message,
+    });
+});
+
+app.use((req, res) => {
+    res.status(404).json({
+        success: false,
+        message: 'Route not found'
     });
 });
 
