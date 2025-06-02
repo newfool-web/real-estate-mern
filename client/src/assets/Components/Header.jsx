@@ -1,4 +1,4 @@
-import { Search } from "lucide-react"
+import { Search, Menu } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { useEffect, useState } from "react"
@@ -7,6 +7,11 @@ export default function Header() {
   const { currentUser } = useSelector((state) => state.user)
   const [searchTerm, setSearchTerm] = useState("")
   const navigate = useNavigate()
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -50,13 +55,20 @@ export default function Header() {
           </button>
         </form>
 
-        <nav>
-          <ul className="flex items-center gap-6">
+        <nav className="relative">
+          <button
+            className="sm:hidden text-gray-700 hover:text-blue-600 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-200"
+            onClick={toggleMobileMenu}
+            aria-label="Toggle mobile menu"
+          >
+            <Menu className="h-6 w-6" />
+          </button>
+          <ul className="hidden sm:flex items-center gap-6">
             <Link to="/">
-              <li className="hidden sm:block text-gray-700 hover:text-blue-600 font-medium transition-colors">Home</li>
+              <li className="text-gray-700 hover:text-blue-600 font-medium transition-colors">Home</li>
             </Link>
             <Link to="/about">
-              <li className="hidden sm:block text-gray-700 hover:text-blue-600 font-medium transition-colors">About</li>
+              <li className="text-gray-700 hover:text-blue-600 font-medium transition-colors">About</li>
             </Link>
             <Link to="/profile">
               {currentUser ? (
@@ -75,6 +87,16 @@ export default function Header() {
               )}
             </Link>
           </ul>
+
+          {isMobileMenuOpen && (
+            <div className="absolute top-full right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg py-2 z-50">
+              <Link to="/" className="block px-4 py-2 text-gray-700 hover:bg-gray-100" onClick={toggleMobileMenu}>Home</Link>
+              <Link to="/about" className="block px-4 py-2 text-gray-700 hover:bg-gray-100" onClick={toggleMobileMenu}>About</Link>
+              <Link to="/profile" className="block px-4 py-2 text-gray-700 hover:bg-gray-100" onClick={toggleMobileMenu}>
+                {currentUser ? "Profile" : "Sign in"}
+              </Link>
+            </div>
+          )}
         </nav>
       </div>
     </header>
