@@ -8,7 +8,7 @@ export default defineConfig({
     proxy: {
       '/api': {
         target: process.env.NODE_ENV === 'production'
-          ? 'https://estate-link.onrender.com'  
+          ? '' 
           : 'http://localhost:3000/',
         secure: false,
       },
