@@ -8,7 +8,7 @@ export default defineConfig({
     proxy: {
       '/api': {
         target: process.env.NODE_ENV === 'production'
-          ? 'https://estate-link-two.vercel.app/' 
+          ? 'https://estate-link-eight.vercel.app/' 
           : 'http://localhost:3000/',
         secure: false,
       },

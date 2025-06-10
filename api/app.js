@@ -15,7 +15,7 @@ const app = express();
 
 app.use(cors({
     origin: process.env.NODE_ENV === 'production' 
-        ? 'https://estate-link-two.vercel.app/' 
+        ? 'https://estate-link-eight.vercel.app/' 
         : 'http://localhost:5173',
     credentials: true
 }));
