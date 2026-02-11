@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: real-estate-mern
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    region: oregon
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Set these in the Render dashboard with your real values
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: FIREBASE_API_KEY
+        sync: false
+    # Render will use the CMD in the Dockerfile, so no startCommand is necessary
+
+

@@ -14,10 +14,8 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 app.use(cors({
-    origin: process.env.NODE_ENV === 'production' 
-        ? 'https://estate-link-eight.vercel.app/' 
-        : 'http://localhost:5173',
-    credentials: true
+    origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+    credentials: true,
 }));
 
 app.use(cookieParser());
@@ -41,18 +39,6 @@ if (process.env.NODE_ENV === 'production') {
     });
 }
  
-
-app.use((err, req, res, next) => {
-    console.error('Error:', err);
-    const statusCode = err.statusCode || 500;
-    const message = err.message || 'Internal Server Error';
-    return res.status(statusCode).json({
-        success: false,
-        statusCode,
-        message,
-    });
-});
-
 app.use((req, res) => {
     res.status(404).json({
         success: false,
@@ -60,6 +46,7 @@ app.use((req, res) => {
     });
 });
 
+// Error handler must be last
 app.use(next);
 
 export { app };
