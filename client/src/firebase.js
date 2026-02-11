@@ -11,7 +11,7 @@ const firebaseConfig = {
   storageBucket: "real-estate-914c9.firebasestorage.app",
   messagingSenderId: "545773276792",
   appId: "1:545773276792:web:71d76227bd71378840e78d"
-}; 
+};
 
 // Initialize Firebase
-export const app = initializeApp(firebaseConfig); 
+const app = initializeApp(firebaseConfig);
