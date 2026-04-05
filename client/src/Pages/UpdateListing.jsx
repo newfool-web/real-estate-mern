@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Navigate } from "react-router-dom";
 import {
   Upload,
   X,
@@ -17,8 +17,11 @@ import {
 
 export default function UpdateListing() {
   const { currentUser } = useSelector((state) => state.user);
-  const navigate = useNavigate();
   const params = useParams();
+  const navigate = useNavigate();
+
+  const [loadState, setLoadState] = useState("loading");
+
   const [files, setFiles] = useState([]);
   const [formData, setFormData] = useState({
     imageUrls: [],
@@ -41,18 +44,31 @@ export default function UpdateListing() {
 
   useEffect(() => {
     const fetchListing = async () => {
-      const listingId = params.listingId;
-      const res = await fetch(`/api/listing/get/${listingId}`);
-      const data = await res.json();
-      if (data.success === false) {
-        console.log(data.message);
+      if (!currentUser?._id) {
+        setLoadState("forbidden");
         return;
       }
-      setFormData(data);
+      try {
+        const listingId = params.listingId;
+        const res = await fetch(`/api/listing/get/${listingId}`);
+        const data = await res.json();
+        if (data.success === false) {
+          setLoadState("notFound");
+          return;
+        }
+        if (String(data.userRef) !== String(currentUser._id)) {
+          setLoadState("forbidden");
+          return;
+        }
+        setFormData(data);
+        setLoadState("ready");
+      } catch {
+        setLoadState("notFound");
+      }
     };
 
     fetchListing();
-  }, []);
+  }, [params.listingId, currentUser?._id]);
 
   const handleImageSubmit = async (e) => {
     if (files.length > 0 && files.length + formData.imageUrls.length < 7) {
@@ -167,6 +183,7 @@ export default function UpdateListing() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({
           ...formData,
           userRef: currentUser._id,
@@ -176,6 +193,7 @@ export default function UpdateListing() {
       setLoading(false);
       if (data.success === false) {
         setError(data.message);
+        return;
       }
       navigate(`/listing/${data._id}`);
     } catch (error) {
@@ -183,6 +201,44 @@ export default function UpdateListing() {
       setLoading(false);
     }
   };
+
+  if (loadState === "loading") {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
+        <div className="flex items-center gap-3">
+          <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+          <span className="text-lg text-gray-600">Loading listing...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (loadState === "notFound") {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center px-6">
+        <div className="text-center max-w-md">
+          <AlertCircle className="w-14 h-14 text-amber-500 mx-auto mb-4" />
+          <h1 className="text-2xl font-semibold text-gray-800 mb-2">
+            Listing not found
+          </h1>
+          <p className="text-gray-600 mb-6">
+            This listing does not exist or could not be loaded.
+          </p>
+          <button
+            type="button"
+            onClick={() => navigate("/search")}
+            className="px-6 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700"
+          >
+            Browse listings
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (loadState === "forbidden") {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 py-8">
